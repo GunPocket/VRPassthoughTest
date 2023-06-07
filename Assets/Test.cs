@@ -64,17 +64,13 @@ public class Test : MonoBehaviour {
     }
 
     private void OnTriggerEnter(Collider other) {
-        print(other.name);
-
-        StartCoroutine(LerpScale(new Vector3(0.5f, 0.5f, 0.5f)));
-
-        foreach (GameObject gameObject in ObjetosDoCenario) {
-            gameObject.SetActive(false);
+        if (!other.CompareTag("MainCamera")) {
+            return;
         }
 
-        Bolha.SetActive(false);
+        StartCoroutine(LerpScale(new Vector3(4f, 4f, 4f)));
 
-        colisorBolha.radius = 5;
+        colisorBolha.radius = 3;
 
         if (!audioSource.isPlaying) {
             audioSource.clip = Audio[0];
@@ -84,10 +80,10 @@ public class Test : MonoBehaviour {
             StartCoroutine(PlayNextAudio(1));
         }
     }
-    
+
     private IEnumerator LerpScale(Vector3 targetSize) {
-        while (CenaDentroBolha.transform.localScale != targetSize) {
-            CenaDentroBolha.transform.localScale = Vector3.Lerp(CenaDentroBolha.transform.localScale, targetSize, Time.deltaTime * 10);
+        while (Bolha.transform.localScale.x != targetSize.x) {
+            Bolha.transform.localScale = Vector3.Lerp(Bolha.transform.localScale, targetSize, Time.deltaTime * 5);
             yield return null;
         }
     }
@@ -104,14 +100,13 @@ public class Test : MonoBehaviour {
     }
 
     private void OnTriggerExit(Collider other) {
-        foreach (GameObject gameObject in ObjetosDoCenario) {
-            gameObject.SetActive(true);
+        if (!other.CompareTag("MainCamera")) {
+            return;
         }
 
-        Bolha.SetActive(true);
-        StartCoroutine(LerpScale(new Vector3(0.1f, 0.1f, 0.1f)));
-
         StopCoroutine("PlayNextAudio");
+
+        StartCoroutine(LerpScale(new Vector3(1f, 1f, 1f)));
 
         colisorBolha.radius = 1.5f;
 
