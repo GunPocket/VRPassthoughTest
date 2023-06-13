@@ -70,7 +70,7 @@ public class Test : MonoBehaviour {
 
         StartCoroutine(LerpScale(new Vector3(4f, 4f, 4f)));
 
-        colisorBolha.radius = 3;
+        colisorBolha.radius = 2.5f;
 
         if (!audioSource.isPlaying) {
             audioSource.clip = Audio[0];
@@ -104,7 +104,7 @@ public class Test : MonoBehaviour {
             return;
         }
 
-        StopCoroutine("PlayNextAudio");
+        StopAllCoroutines();
 
         StartCoroutine(LerpScale(new Vector3(1f, 1f, 1f)));
 
