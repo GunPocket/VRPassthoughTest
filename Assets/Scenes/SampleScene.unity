@@ -414,7 +414,7 @@ GameObject:
   m_Component:
   - component: {fileID: 591854666}
   m_Layer: 0
-  m_Name: CenaBolha
+  m_Name: Maquete
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1152,10 +1152,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a217fc4864f3c3489014027ec9636b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CenaDentroBolha: {fileID: 1061794363}
-  ObjetosDoCenario:
-  - {fileID: 360481888}
+  Maquete: {fileID: 0}
   Bolha: {fileID: 748199850}
+  TamanhoDaBolhaExpandida: 1.5
+  GizmosTamBolhaExp: 0
   Audio:
   - {fileID: 8300000, guid: e703af013f1b0d04c87eaf2991419542, type: 3}
   - {fileID: 8300000, guid: 79368db909c73984d80f7cbeb633f72e, type: 3}
@@ -1232,7 +1232,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1061794364}
   m_Layer: 0
-  m_Name: CenaBolha
+  m_Name: Maquete
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2028,24 +2028,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a217fc4864f3c3489014027ec9636b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CenaDentroBolha: {fileID: 591854665}
-  ObjetosDoCenario:
-  - {fileID: 360481888}
+  Maquete: {fileID: 591854665}
   Bolha: {fileID: 1798175108}
+  TamanhoDaBolhaExpandida: 1.5
+  GizmosTamBolhaExp: 0
   Audio:
   - {fileID: 8300000, guid: db337645302118743ab4fde3a2468ea9, type: 3}
   - {fileID: 8300000, guid: 4d98a93c4f4baad47a6ad808de0159d5, type: 3}
   VolumesAudio:
-  - 16.5
-  - 16
+  - 14.5
+  - 14.5
   LoopAudio: 0000
-  SonsAmbiente:
-  - {fileID: 8300000, guid: 6b6dcc66a6f6e054a868b007b631a143, type: 3}
-  - {fileID: 8300000, guid: 25a3f279e0e1cb8488f4db68a677b4b3, type: 3}
-  VolumesAmbiente:
-  - 5
-  - 6.6
-  LoopAmbiente: 0101
+  SonsAmbiente: []
+  VolumesAmbiente: []
+  LoopAmbiente: 
 --- !u!54 &1693133410
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2073,7 +2069,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 1.5
+  m_Radius: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!82 &1693133412
 AudioSource:
