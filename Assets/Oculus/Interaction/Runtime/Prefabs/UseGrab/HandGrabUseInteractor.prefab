@@ -62,6 +62,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _activeState: {fileID: 1619235989396027011}
   _interactableFilters: []
+  _candidateTiebreaker: {fileID: 0}
+  _maxIterationsPerFrame: 3
+  _data: {fileID: 0}
   _hand: {fileID: 1619235989396027011}
   _useAPI: {fileID: 4499839522263794455}
 --- !u!114 &4499839522263794455
