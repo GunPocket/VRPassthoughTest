@@ -21,9 +21,9 @@ public class ClothWindController : MonoBehaviour
         //Debug.Log(transform.eulerAngles);
         //Debug.Log(transform.rotation);
         Vector3 vec = transform.up;
-        Debug.Log(vec);
+        //Debug.Log(vec);
         vec =  vec * -7;
-        Debug.Log(vec);
+        //Debug.Log(vec);
         direction = vec;
         //cloth.externalAcceleration = vec;
     }
