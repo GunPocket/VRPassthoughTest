@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class BubbleHandler : MonoBehaviour {
 
-    //ESSE SCRIPT AINDA ESTÁ EM TESTE, NÃO É O SCRIPT DA APLICAÇÃO, NÃO O UTILIZAR ALÉM DESSE PROTÓTIPO!!!
-
     private AudioSource audioSource; //AudioSource que tocará os áudios
     private SphereCollider colisorBolha; //Colisor da bolha
 
@@ -63,9 +61,6 @@ public class BubbleHandler : MonoBehaviour {
     public bool[] LoopAmbiente; //Array de se cada som ambiente estará em loop
 
     private void Awake() {
-        Debug.LogWarning($"Essa aplicação está usando um script de teste no objeto {gameObject.name}." +
-            $" Não o utilizar além desse protótipo.");
-
         if (maquete == null) { //Se a variável Maquete não estiver atribuída
             Debug.LogWarning("O objeto CenaDentroBolha não foi atribuído.");
         }

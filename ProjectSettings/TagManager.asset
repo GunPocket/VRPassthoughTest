@@ -3,15 +3,16 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Cloth
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Bolha
   - Water
   - UI
-  - 
+  - Test
   - 
   - 
   - 

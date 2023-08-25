@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Bolha
-  m_Shader: {fileID: -6465566751694194690, guid: 4c98c8fe8c9979e488054e4cc71e4b08, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 564493f322fa22e4699ddee76541c7b1, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
@@ -79,7 +79,9 @@ Material:
     - Vector1_067f31814ca54e5bba6d202654ca6563: 1
     - Vector1_173f0d156d0c4315af2468f90517127c: 6
     - Vector1_43c03958feea4dcd85b084ef80730525: 0.28
+    - Vector1_8705a9fde2d14f1eb9be37ac35d07206: 1
     - Vector1_88abce1bb3dc4e4191f6652b2f1162bc: 0.9
+    - Vector1_b1f5702891a74edaaa7e72e80ee133c9: 0
     - Vector1_ea68a574de514e8c9b8426977f818818: 1
     - Vector1_f96905d57bbe4fc6afb1f6ee65337e04: 0.45
     - _AlphaClip: 0

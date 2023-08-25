@@ -18,17 +18,11 @@ public class ClothWindController : MonoBehaviour
         Debug.Log(animator);
         cloth = GetComponent<Cloth>();
         accel = cloth.externalAcceleration.z;
-        //Debug.Log(transform.eulerAngles);
-        //Debug.Log(transform.rotation);
         Vector3 vec = transform.up;
-        //Debug.Log(vec);
         vec =  vec * -7;
-        //Debug.Log(vec);
         direction = vec;
-        //cloth.externalAcceleration = vec;
     }
 
-    // Update is called once per frame
     void Update()
     {
         SetAccel(-0.004f);
@@ -71,6 +65,5 @@ public class ClothWindController : MonoBehaviour
         }
         accel += amount;
         cloth.externalAcceleration = Vector3.ClampMagnitude(direction,accel);
-        //Debug.Log(cloth.externalAcceleration);
     }
 }
