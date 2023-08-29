@@ -9,12 +9,12 @@ public class SplineCustomEditor : Editor {
 
         DrawDefaultInspector(); //Desenha o inspector padrão do objeto
 
-        if (splineHandler.PositionReference.Length != splineHandler.SplineTangentIn.Length) {
-            splineHandler.SplineTangentIn = new float[splineHandler.PositionReference.Length];
+        if (splineHandler.NodeReference.Length != splineHandler.SplineTangentIn.Length) {
+            splineHandler.SplineTangentIn = new float[splineHandler.NodeReference.Length];
         }
 
-        if (splineHandler.PositionReference.Length != splineHandler.SplineTangentOut.Length) {
-            splineHandler.SplineTangentOut = new float[splineHandler.PositionReference.Length];
+        if (splineHandler.NodeReference.Length != splineHandler.SplineTangentOut.Length) {
+            splineHandler.SplineTangentOut = new float[splineHandler.NodeReference.Length];
         }
     }
 }
