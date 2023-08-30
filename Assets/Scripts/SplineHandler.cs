@@ -1,42 +1,45 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Splines;
+using static UnityEngine.GraphicsBuffer;
 
 public class SplineHandler : MonoBehaviour {
+    public bool EditMode = false;
+
     [Header("Referencia do Spline")]
     public SplineContainer SplineContainer;
 
     [Header("Referencias para os Nodes do Spline")]
     public Transform[] NodeReference;
-    //private List<Transform> TangentInReference;
-    //private List<Transform> TangentOutReference;
+    //private List<Transform> inTangentReference;
+    //private List<Transform> outTangentReference;
 
-    [Header("Como deve ser feito a edição das tangentes das splines")]
+    [Header("Comportamento das splines")]
     [Tooltip("Ainda não foi implementado o modo manual para salvar tempo de desenvolvimento")]
     public EditTypeEnum EditType;
 
     public enum EditTypeEnum {
-        /*Manual,*/
-        Automatico
+        Automatico,
+        Broken,
+        Continuous,
+        Mirrored
     };
 
-    [Header("Magnitude das tangentes")]
-    public float[] SplineTangentIn;
-    public float[] SplineTangentOut;
+    //[Header("Magnitude das tangentes")]
+    private float[] tangentInStrength;
+    private float[] tangentOutStrength;
 
-    [Header("Comportamento da tangente")]
-    public TangentMode TangentMode;
+    private TangentMode TangentMode;
 
     private Vector3 tangentIn;
     private Vector3 tangentOut;
 
 
     private void Awake() {
-        Debug.LogWarning("Refatorar isso aqui pf");
-
         if (!SplineContainer) {
             SplineContainer = GetComponent<SplineContainer>();
         }
@@ -48,54 +51,110 @@ public class SplineHandler : MonoBehaviour {
 
         SplineContainer.Spline.SetTangentMode(TangentMode);
 
+        tangentInStrength = new float[NodeReference.Length];
+        tangentOutStrength = new float[NodeReference.Length];
 
-        /*TangentInReference = new List<Transform>();
-        TangentOutReference = new List<Transform>();
+        tangentInStrength = TangentSetup(tangentInStrength);
+        tangentOutStrength = TangentSetup(tangentOutStrength);
+
+        //BrokenBezierSetup();
+    }
+
+    private float[] TangentSetup(float[] tangent) {
+        float[] tan = new float[tangent.Length];
+        for (int i = 0; i < tan.Length; i++) {
+            tan[i] = 1f;
+        }
+        return tan;
+    }
+
+    private void BrokenBezierSetup() {
+        ///ESSA PARTE DO CÓDIGO É PARA O SETUP BROKEN TANGENTES
+
+        /*inTangentReference = new List<Transform>();
+        outTangentReference = new List<Transform>();
 
         foreach (Transform t in NodeReference) {
-            int index = TangentInReference.Count;
+            int index = inTangentReference.Count;
 
-            TangentInReference.Add(t.GetChild(0));
+            inTangentReference.Add(t.GetChild(0));
             var tInReference = SplineContainer.Spline.GetCurve(index > 0 ? index - 1 : index).Tangent1;
-            TangentInReference[index].transform.position = tInReference + (float3)t.position;
+            inTangentReference[index].transform.position = tInReference + (float3)t.position;
 
-            TangentOutReference.Add(t.GetChild(1));
+            outTangentReference.Add(t.GetChild(1));
             var tOutReference = SplineContainer.Spline.GetCurve(index).Tangent0;
-            TangentOutReference[index].transform.position = tOutReference + (float3)t.position;
+            outTangentReference[index].transform.position = tOutReference + (float3)t.position;
         }*/
     }
 
     private void LateUpdate() {
-        if (EditType == EditTypeEnum.Automatico) {
-            for (int i = 0; i < NodeReference.Length; i++) {
-                if (0 == i) {
-                    tangentIn = Vector3.zero;
-                    tangentOut = NodeReference[i + 1].position - NodeReference[i].position;
-                } else if (i == NodeReference.Length - 1) {
-                    tangentIn = NodeReference[i].position - NodeReference[i - 1].position;
-                    tangentOut = Vector3.zero;
-                } else {
-                    tangentIn = NodeReference[i - 1].position - NodeReference[i + 1].position;
-                    tangentOut = NodeReference[i + 1].position - NodeReference[i - 1].position;
+        if (EditMode == false) { return; }
+
+        switch (EditType) {
+            case EditTypeEnum.Automatico:
+                for (int i = 0; i < NodeReference.Length; i++) {
+                    BezierKnot bezierKnotPosition = new BezierKnot(NodeReference[i].position);
+                    SplineContainer.Spline.SetKnot(i, bezierKnotPosition);
                 }
+                TangentMode = TangentMode.AutoSmooth;
+                break;
 
-                BezierKnot bezierKnotPosition = new BezierKnot(NodeReference[i].position,
-                                                Vector3.Normalize(tangentIn) * SplineTangentIn[i],
-                                                Vector3.Normalize(tangentOut) * SplineTangentOut[i]);
+            /*case EditTypeEnum.Broken:
+                TangentMode = TangentMode.Broken;
+                break;
+            */
 
-                SplineContainer.Spline.SetKnot(i, bezierKnotPosition);
+            case EditTypeEnum.Continuous:
+                for (int i = 0; i < NodeReference.Length; i++) {
 
-            }
-        } else {
-           /* for (int i = 0; i < NodeReference.Length; i++) {
-                BezierKnot bezierKnotPosition = new BezierKnot(NodeReference[i].transform.position,
-                                               TangentInReference[i].transform.position,
-                                               TangentOutReference[i].transform.position);
+                    if (0 == i) {
+                        tangentIn = Vector3.zero;
+                        tangentOut = NodeReference[i + 1].position - NodeReference[i].position;
 
-                SplineContainer.Spline.SetKnot(i, bezierKnotPosition);
-            }
-           */
+                        tangentInStrength[i] = 0;
+                        tangentOutStrength[i] = Vector3.Distance(NodeReference[i + 1].transform.position,
+                                            NodeReference[i].transform.position);
+
+                    } else if (i == NodeReference.Length - 1) {
+                        tangentIn = NodeReference[i].position - NodeReference[i - 1].position;
+                        tangentOut = Vector3.zero;
+
+                        tangentInStrength[i] = Vector3.Distance(NodeReference[i].transform.position,
+                                            NodeReference[i - 1].transform.position);
+                        tangentOutStrength[i] = 0;
+
+                    } else {
+                        tangentIn = NodeReference[i - 1].position - NodeReference[i + 1].position;
+                        tangentOut = NodeReference[i + 1].position - NodeReference[i - 1].position;
+
+                        tangentInStrength[i] = Vector3.Distance(NodeReference[i].transform.position,
+                                            NodeReference[i - 1].transform.position); ;
+                        tangentOutStrength[i] = Vector3.Distance(NodeReference[i].transform.position,
+                                            NodeReference[i + 1].transform.position);
+
+                    }
+
+                    BezierKnot bezierKnotPosition = new BezierKnot(NodeReference[i].position,
+                                                    Vector3.Normalize(tangentIn) * tangentInStrength[i],
+                                                    Vector3.Normalize(tangentOut) * tangentOutStrength[i]);
+
+                    SplineContainer.Spline.SetKnot(i, bezierKnotPosition);
+                }
+                TangentMode = TangentMode.Continuous;
+                break;
+
+            /*case EditTypeEnum.Mirrored:
+                TangentMode = TangentMode.Mirrored;
+                break;
+            */
+
+            default:
+                Debug.LogWarning("Outras formas de editar além de automatico e continuous " +
+                    "ainda não implementadas por completo, ajustando para automático");
+                TangentMode = TangentMode.AutoSmooth;
+                break;
         }
+
         SplineContainer.Spline.SetTangentMode(TangentMode);
     }
 }

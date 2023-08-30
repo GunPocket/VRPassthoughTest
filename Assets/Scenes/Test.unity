@@ -582,8 +582,8 @@ MonoBehaviour:
     - Mode: 0
       Tension: 0.5
       m_DistanceToInterpolation:
-      - Distance: 0
-        T: 0
+      - Distance: -1
+        T: -1
       - Distance: 0.03614132
         T: 0.03448276
       - Distance: 0.08218545
@@ -645,8 +645,8 @@ MonoBehaviour:
     - Mode: 0
       Tension: 0.5
       m_DistanceToInterpolation:
-      - Distance: 0
-        T: 0
+      - Distance: -1
+        T: -1
       - Distance: 0.11638499
         T: 0.03448276
       - Distance: 0.23367763
@@ -708,8 +708,8 @@ MonoBehaviour:
     - Mode: 2
       Tension: 0.5
       m_DistanceToInterpolation:
-      - Distance: 0
-        T: 0
+      - Distance: -1
+        T: -1
       - Distance: 0.18614297
         T: 0.03448276
       - Distance: 0.36536932
@@ -771,8 +771,8 @@ MonoBehaviour:
     - Mode: 2
       Tension: 0.5
       m_DistanceToInterpolation:
-      - Distance: 0
-        T: 0
+      - Distance: -1
+        T: -1
       - Distance: 0.103447914
         T: 0.03448276
       - Distance: 0.20689583
@@ -932,6 +932,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96e42af717bf3a34794d4cab9e568bc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  EditMode: 0
   SplineContainer: {fileID: 686498328}
   NodeReference:
   - {fileID: 1692073666}
@@ -940,19 +941,6 @@ MonoBehaviour:
   - {fileID: 493154698}
   - {fileID: 718307060}
   EditType: 0
-  SplineTangentIn:
-  - 1
-  - 1
-  - 1
-  - 1
-  - 1
-  SplineTangentOut:
-  - 1
-  - 1
-  - 1
-  - 1
-  - 1
-  TangentMode: 0
 --- !u!1 &717848415
 GameObject:
   m_ObjectHideFlags: 0
