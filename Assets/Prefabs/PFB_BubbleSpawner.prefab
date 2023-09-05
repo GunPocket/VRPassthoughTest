@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8092243662090302537}
   - component: {fileID: 1925752961820760397}
   m_Layer: 0
-  m_Name: Bubble Spawner
+  m_Name: PFB_BubbleSpawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

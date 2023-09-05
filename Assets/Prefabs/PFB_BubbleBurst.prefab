@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7807688757162610932}
   - component: {fileID: 3777394613400371087}
   m_Layer: 0
-  m_Name: Bubble Burst
+  m_Name: PFB_BubbleBurst
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
