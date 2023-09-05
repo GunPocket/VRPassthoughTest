@@ -29,7 +29,8 @@ public class SplineHandler : MonoBehaviour {
         Mirrored
     };
 
-    //[Header("Magnitude das tangentes")]
+    [Header("Magnitude das tangentes")]
+    [Range(0f, 1f)] public float TangentEase;
     private float[] tangentInStrength;
     private float[] tangentOutStrength;
 
@@ -135,8 +136,8 @@ public class SplineHandler : MonoBehaviour {
                     }
 
                     BezierKnot bezierKnotPosition = new BezierKnot(NodeReference[i].position,
-                                                    Vector3.Normalize(tangentIn) * tangentInStrength[i],
-                                                    Vector3.Normalize(tangentOut) * tangentOutStrength[i]);
+                                                    Vector3.Normalize(tangentIn) * tangentInStrength[i] * TangentEase,
+                                                    Vector3.Normalize(tangentOut) * tangentOutStrength[i] * TangentEase);
 
                     SplineContainer.Spline.SetKnot(i, bezierKnotPosition);
                 }
