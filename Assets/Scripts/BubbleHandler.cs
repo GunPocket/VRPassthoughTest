@@ -15,7 +15,7 @@ public class BubbleHandler : MonoBehaviour {
     [SerializeField] GameObject maquete; //GameObject da maquete
 
     [Tooltip("Aqui você deve adicionar a referência do GameObject da bolha para essa variável")]
-    [SerializeField] GameObject bolha; //GameObject da bolha
+    [SerializeField] GameObject bolhaParent; //GameObject da bolha
 
 
     [Header("Tamanho da bolha")]
@@ -24,7 +24,7 @@ public class BubbleHandler : MonoBehaviour {
     [SerializeField] private float tamanhoTransicao;
 
     [Tooltip("Ditará qual tamanho a bolha irá se expandir")]
-    [SerializeField][Range(0, 5)] float tamanhoDaBolhaExpandida; //Tamanho da bolha ao expandir. Range diz
+    [SerializeField][Range(0, 5)] float tamanhoExpandida; //Tamanho da bolha ao expandir. Range diz
                                                                  //o valor mínimo e máximo que pode ser
                                                                  //atribuído
 
@@ -61,28 +61,29 @@ public class BubbleHandler : MonoBehaviour {
     public bool[] LoopAmbiente; //Array de se cada som ambiente estará em loop
 
     private void Awake() {
+        colisorBolha = GetComponent<SphereCollider>(); //Pega o componente SphereCollider do objeto
+        audioSource = GetComponent<AudioSource>(); //Pega o componente AudioSource do objeto
+
         if (maquete == null) { //Se a variável Maquete não estiver atribuída
-            Debug.LogWarning("O objeto CenaDentroBolha não foi atribuído.");
+            Debug.LogWarning("O objeto CenaDentroBolha não foi atribuído.", gameObject);
         }
 
-        if (bolha == null) { //Se a variável Bolha não estiver atribuída
-            Debug.LogWarning("O objeto Bolha não foi atribuído.");
+        if (bolhaParent == null) { //Se a variável Bolha não estiver atribuída
+            Debug.LogWarning("O objeto Bolha não foi atribuído.", gameObject);
         }
 
         if (Audio.Length == 0 || Audio == null) { //Se o array Audio estiver vazio
-            Debug.LogWarning("O array Audio está vazio.");
+            Debug.LogWarning("O array Audio está vazio.", gameObject);
         }
 
         if (SonsAmbiente.Length == 0 || SonsAmbiente == null) { //Se o array SonsAmbiente estiver vazio
-            Debug.LogWarning("O array SonsAmbiente está vazio.");
+            Debug.LogWarning("O array SonsAmbiente está vazio.", gameObject);
         }
-
-        colisorBolha = GetComponent<SphereCollider>(); //Pega o componente SphereCollider do objeto
-        audioSource = GetComponent<AudioSource>(); //Pega o componente AudioSource do objeto
 
         tamanhoBolhaNormal = colisorBolha.radius; //Atribui o tamanho normal da bolha
 
         int VolumesAmbienteIndex = 0; //Index para o array de volumes de cada som ambiente
+        
         foreach (AudioClip clip in SonsAmbiente) { //Para cada som ambiente no array SonsAmbiente
             var CenaBolhaAudioSource = maquete.AddComponent<AudioSource>(); //Adiciona um AudioSource
                                                                             //no objeto Maquete
@@ -106,12 +107,12 @@ public class BubbleHandler : MonoBehaviour {
         //até que uma condição seja atingida fora do void Update() ou void FixedUpdate() que são funções
         //que são chamadas a cada frame
 
-        float newScale = tamanhoDaBolhaExpandida * 2.5f;
-        bolha.transform.DOScale(newScale, tamanhoTransicao);
+        float newScale = tamanhoExpandida * 2.5f;
+        bolhaParent.transform.DOScale(newScale, tamanhoTransicao);
 
-        colisorBolha.radius = tamanhoDaBolhaExpandida; //Atribui o tamanho da bolha ao colisor
+        colisorBolha.radius = tamanhoExpandida; //Atribui o tamanho da bolha ao colisor
 
-        if (!audioSource.isPlaying) { //Se o AudioSource não estiver tocando
+        if (!audioSource.isPlaying && Audio.Length != 0) { //Se o AudioSource não estiver tocando e tiver audio
             PlayAudio(Audio[0], VolumesAudio[0], LoopAudio[0]);
             StartCoroutine(PlayNextAudio(1)); //Começa a corrotina para tocar o próximo áudio
         }
@@ -139,7 +140,7 @@ public class BubbleHandler : MonoBehaviour {
 
         StopAllCoroutines(); //Para todas as corrotinas
 
-        bolha.transform.DOScale(tamanhoBolhaNormal, tamanhoTransicao);
+        bolhaParent.transform.DOScale(tamanhoBolhaNormal, tamanhoTransicao);
 
         colisorBolha.radius = tamanhoBolhaNormal; //Atribui o tamanho normal da bolha ao colisor
 
@@ -159,7 +160,7 @@ public class BubbleHandler : MonoBehaviour {
         }
 
         Gizmos.color = Color.yellow; //Atribui a cor amarela ao Gizmos
-        Gizmos.DrawWireSphere(transform.position, tamanhoDaBolhaExpandida); //Desenha uma esfera com o
+        Gizmos.DrawWireSphere(transform.position, tamanhoExpandida); //Desenha uma esfera com o
                                                                             //tamanho da bolha expandida
     }
 }
