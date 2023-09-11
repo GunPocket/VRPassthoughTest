@@ -6,6 +6,7 @@ public class BubbleHandler : MonoBehaviour {
 
     private AudioSource audioSource; //AudioSource que tocará os áudios
     private SphereCollider colisorBolha; //Colisor da bolha
+    private BubbleTransitionHandler bubbleTransitionHandler;
 
 
     [Header("Referência dos objetos da cena")] //Cabeçalho para melhor organização no inspector
@@ -25,8 +26,8 @@ public class BubbleHandler : MonoBehaviour {
 
     [Tooltip("Ditará qual tamanho a bolha irá se expandir")]
     [SerializeField][Range(0, 5)] float tamanhoExpandida; //Tamanho da bolha ao expandir. Range diz
-                                                                 //o valor mínimo e máximo que pode ser
-                                                                 //atribuído
+                                                          //o valor mínimo e máximo que pode ser
+                                                          //atribuído
 
     [Tooltip("Mostrará na cena o tamanho visualmente do tamanho")]
     [SerializeField] bool GizmosTamBolhaExp; //Mostrará na cena o tamanho visualmente do tamanho
@@ -38,34 +39,20 @@ public class BubbleHandler : MonoBehaviour {
     [Tooltip("Quanto tempo demorará para o áudio ficar no volume máximo ou mínimo, vale tanto para os " +
         "audios que irão tocar quanto para os sons ambientes (em segundos)")]
     [SerializeField] float audioTransicao;
-    
+
     [Tooltip("Adicionar o áudio que deverá ser tocado ao se aproximar da bolha")]
     public AudioClip[] Audio; //Array de áudios
-    
+
     [Tooltip("Volume de cada áudio")]
     [Range(0, 100)] public float[] VolumesAudio; //Array de volumes de cada áudio
-    
-    [Tooltip("Se cada áudio deverá tocar em loop")]
-    public bool[] LoopAudio; //Array de se cada áudio deverá tocar em loop
-
-
-    [Header("Sons ambiente")]
-    
-    [Tooltip("Adicionar os sons ambientes que tocarão ao se aproximar da bolha")]
-    public AudioClip[] SonsAmbiente; //Array de sons ambiente
-    
-    [Tooltip("Volume de cada som ambiente")]
-    [Range(0, 100)] public float[] VolumesAmbiente; //Array de volumes de cada som ambiente
-    
-    [Tooltip("Se cada som ambiente estará em loop")]
-    public bool[] LoopAmbiente; //Array de se cada som ambiente estará em loop
 
     private void Awake() {
         colisorBolha = GetComponent<SphereCollider>(); //Pega o componente SphereCollider do objeto
         audioSource = GetComponent<AudioSource>(); //Pega o componente AudioSource do objeto
+        bubbleTransitionHandler = GetComponent<BubbleTransitionHandler>();
 
         if (maquete == null) { //Se a variável Maquete não estiver atribuída
-            Debug.LogWarning("O objeto CenaDentroBolha não foi atribuído.", gameObject);
+            Debug.LogWarning("O objeto Maquete não foi atribuído.", gameObject);
         }
 
         if (bolhaParent == null) { //Se a variável Bolha não estiver atribuída
@@ -76,61 +63,64 @@ public class BubbleHandler : MonoBehaviour {
             Debug.LogWarning("O array Audio está vazio.", gameObject);
         }
 
-        if (SonsAmbiente.Length == 0 || SonsAmbiente == null) { //Se o array SonsAmbiente estiver vazio
-            Debug.LogWarning("O array SonsAmbiente está vazio.", gameObject);
-        }
-
         tamanhoBolhaNormal = colisorBolha.radius; //Atribui o tamanho normal da bolha
-
-        int VolumesAmbienteIndex = 0; //Index para o array de volumes de cada som ambiente
-        
-        foreach (AudioClip clip in SonsAmbiente) { //Para cada som ambiente no array SonsAmbiente
-            var CenaBolhaAudioSource = maquete.AddComponent<AudioSource>(); //Adiciona um AudioSource
-                                                                            //no objeto Maquete
-            CenaBolhaAudioSource.clip = clip; //Atribui o áudio
-            CenaBolhaAudioSource.DOFade(VolumesAmbiente[VolumesAmbienteIndex] * 0.01f, audioTransicao); 
-            //Atribui o volume multiplicado por 0.01f para ficar entre 0 e 1 pois atributo volume do
-            //AudioSource vai de 0 a 1
-            CenaBolhaAudioSource.loop = LoopAmbiente[VolumesAmbienteIndex]; //Atribui se o áudio estará
-                                                                            //em loop
-            VolumesAmbienteIndex++; //Adiciona 1 ao index
-        }
     }
 
     private void OnTriggerEnter(Collider other) { //Quando um objeto entrar no colisor
         if (!other.CompareTag("MainCamera")) { //Caso o objeto não seja a câmera
             return; //Só ignora
-        }       
+        }
 
         StopAllCoroutines(); //Para todas as corrotinas. 
         //Corrotinas são funções que podem ser pausadas e continuadas depois de um tempo determinado ou
         //até que uma condição seja atingida fora do void Update() ou void FixedUpdate() que são funções
         //que são chamadas a cada frame
 
-        float newScale = tamanhoExpandida * 2.5f;
-        bolhaParent.transform.DOScale(newScale, tamanhoTransicao);
-
-        colisorBolha.radius = tamanhoExpandida; //Atribui o tamanho da bolha ao colisor
-
         if (!audioSource.isPlaying && Audio.Length != 0) { //Se o AudioSource não estiver tocando e tiver audio
-            PlayAudio(Audio[0], VolumesAudio[0], LoopAudio[0]);
-            StartCoroutine(PlayNextAudio(1)); //Começa a corrotina para tocar o próximo áudio
+            PlayAudio(Audio[0], VolumesAudio[0]);
+
+            float newScale = tamanhoExpandida * 2.5f;
+            bolhaParent.transform.DOScale(newScale, tamanhoTransicao);
+
+            colisorBolha.radius = tamanhoExpandida; //Atribui o tamanho da bolha ao colisor
+        } else {
+            if (!bubbleTransitionHandler.IsBubblePopped()) {
+                StartCoroutine(PopBubble());
+            }
         }
     }
 
-    private void PlayAudio(AudioClip audioClip, float volume, bool loop) { //Função para tocar um áudio
+    private void PlayAudio(AudioClip audioClip, float volume) { //Função para tocar um áudio
         audioSource.clip = audioClip; //Atribui o áudio
         audioSource.DOFade(volume * 0.01f, audioTransicao); //Aumenta o volume do audio de 0 até o volume
-        audioSource.loop = loop; //Atribui se o áudio estará em loop
         audioSource.Play(); //Toca o áudio
+
+        if (Audio.Length > 1) {
+            StartCoroutine(PlayNextAudio(1)); //Começa a corrotina para tocar o próximo áudio
+        } else {
+            if (!bubbleTransitionHandler.IsBubblePopped()) {
+                StartCoroutine(PopBubble());
+            }
+        }
     }
 
     private IEnumerator PlayNextAudio(int index) { //Corrotina para tocar o próximo áudio
         yield return new WaitForSeconds(audioSource.clip.length); //Espera o tempo do áudio atual acabar
-        PlayAudio(Audio[index], VolumesAudio[index], LoopAudio[index]); //Toca o próximo áudio
+        PlayAudio(Audio[index], VolumesAudio[index]); //Toca o próximo áudio
         if (Audio.Length > index + 1) { //Se o próximo áudio existir
             StartCoroutine(PlayNextAudio(index + 1)); //Começa a corrotina para tocar o próximo áudio
+        } else {
+            if (!bubbleTransitionHandler.IsBubblePopped()) {
+                yield return new WaitForSeconds(audioSource.clip.length); //Espera o tempo do áudio atual acabar
+                StartCoroutine(PopBubble());
+            }
         }
+    }
+
+    private IEnumerator PopBubble() {
+        yield return new WaitForSeconds(0.1f);
+        bolhaParent.transform.DOScale(tamanhoBolhaNormal, tamanhoTransicao);
+        bubbleTransitionHandler.StartPopBubble();
     }
 
     private void OnTriggerExit(Collider other) { //Quando um objeto sair do colisor
@@ -161,6 +151,6 @@ public class BubbleHandler : MonoBehaviour {
 
         Gizmos.color = Color.yellow; //Atribui a cor amarela ao Gizmos
         Gizmos.DrawWireSphere(transform.position, tamanhoExpandida); //Desenha uma esfera com o
-                                                                            //tamanho da bolha expandida
+                                                                     //tamanho da bolha expandida
     }
 }
