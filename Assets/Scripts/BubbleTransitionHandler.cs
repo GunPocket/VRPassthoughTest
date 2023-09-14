@@ -6,28 +6,27 @@ using UnityEngine.VFX;
 
 public class BubbleTransitionHandler : MonoBehaviour {
 
-    private SphereCollider sphereCollider;
-    private MeshRenderer sphereMeshRenderer;
-    private Transform sphereTransform;
+    private SphereCollider _sphereCollider;
+    private MeshRenderer _sphereMeshRenderer;
+    private Transform _sphereTransform;
 
-    public RiverHandler River;
-    
     public bool IsFirstBubble = false;
-    private bool firstInteraction = true;
-    private bool didItPop = false;
+    private bool _firstInteraction = true;
+    private bool _didItPop = false;
 
     [Header("Efeitos na cena para esta bolha")]
-    [SerializeField] private ParticleSystem BubblePop;
+    [SerializeField] private ParticleSystem _bubblePop;
     public ParticleSystem BubbleSpawner;
-    [SerializeField] private VisualEffect Rio;
-    [HideInInspector] public Animator riseAnimation;
+    [SerializeField] private VisualEffect _Rio;
+    [HideInInspector] public Animator RiseAnimation;
     [Range(0, 5)] public float RiseAmount = 2;
 
     [Header("Objetos que irão ser mostrados")]
-    [SerializeField] private GameObject[] Scenery;
+    [SerializeField] private GameObject[] _scenery;
 
-    [Header("Velocidade que o rio aparecerá")]
-    [SerializeField] private AnimationCurve RiverShowBehavior;
+    [Header("Características do rio")]
+    [SerializeField] private AnimationCurve _riverShowBehavior;
+    [SerializeField] private bool _stopRiverAnimationAfterBubble;
 
     [Header("Próxima bolha")]
     public GameObject NextBubble;
@@ -37,49 +36,47 @@ public class BubbleTransitionHandler : MonoBehaviour {
 
     private void OnEnable() {
         Initializer();
-        River?.Initializer(gameObject.transform, NextBubble.transform, Rio);
-
 
         if (IsFirstBubble) {
             BubbleSpawner.Play();
-            riseAnimation.Play("Rise");
+            RiseAnimation.Play("Rise");
             NextBubble.GetComponentInChildren<BubbleTransitionHandler>().NextBubble.SetActive(false);
             NextBubble.SetActive(false);
         }
 
-        if (Rio != null) {
-            Rio.Stop();
+        if (_Rio != null) {
+            _Rio.Stop();
         }
 
         StartCoroutine(StartBubble());
 
-        foreach (var obj in Scenery) {
+        foreach (var obj in _scenery) {
             obj.SetActive(false);
         }
     }
 
     private void Initializer() {
-        riseAnimation = GetComponent<Animator>();
-        sphereCollider = GetComponentInChildren<SphereCollider>();
-        sphereMeshRenderer = GetComponentInChildren<MeshRenderer>();
+        RiseAnimation = GetComponent<Animator>();
+        _sphereCollider = GetComponentInChildren<SphereCollider>();
+        _sphereMeshRenderer = GetComponentInChildren<MeshRenderer>();
 
         Transform[] transforms = gameObject.GetComponentsInChildren<Transform>();
-        sphereTransform = transforms[1];
+        _sphereTransform = transforms[1];
     }
 
     private IEnumerator StartBubble() {
         yield return new WaitForSecondsRealtime(3f);
-        sphereMeshRenderer.enabled = true;
+        _sphereMeshRenderer.enabled = true;
         yield return new WaitForSecondsRealtime(5f);
         BubbleSpawner.Stop();
     }
 
     public void OnTriggerEnter(Collider other) {
-        if (!firstInteraction) {
+        if (!_firstInteraction) {
             return;
         }
 
-        firstInteraction = false;
+        _firstInteraction = false;
     }
 
     public void StartPopBubble() {
@@ -90,40 +87,44 @@ public class BubbleTransitionHandler : MonoBehaviour {
 
         BubbleSpawner.Stop();
 
-        sphereTransform.transform.DOMoveY(sphereTransform.position.y + 2, 3);
+        _sphereTransform.transform.DOMoveY(_sphereTransform.position.y + 2, 3);
         yield return new WaitForSecondsRealtime(3);
-        BubblePop.Play();
-        sphereMeshRenderer.enabled = false;
-        didItPop = true;
-        sphereCollider.enabled = false;
-        if (Rio != null) {
+        _bubblePop.Play();
+        _sphereMeshRenderer.enabled = false;
+        _didItPop = true;
+        _sphereCollider.enabled = false;
+        if (_Rio != null) {
             StartCoroutine(StartRiver());
         }
     }
 
     private IEnumerator StartRiver() {
-        Rio.Play();
+        _Rio.Play();
         float x = 0;
         while (x < 100) {
             yield return new WaitForSecondsRealtime(0.05f);
             x++;
-            float value = RiverShowBehavior.Evaluate(x / 100f);
-            Rio.playRate = value;
+            float value = _riverShowBehavior.Evaluate(x / 100f);
+            _Rio.playRate = value;
         }
         if (x == 100) {
-            foreach (var obj in Scenery) {
+            foreach (var obj in _scenery) {
                 obj.SetActive(true);
             }
 
             NextBubble.SetActive(true);
-            NextBubble.GetComponentInChildren<BubbleTransitionHandler>().riseAnimation.Play("Rise");
+            NextBubble.GetComponentInChildren<BubbleTransitionHandler>().RiseAnimation.Play("Rise");
             NextBubble.GetComponentInChildren<BubbleTransitionHandler>().BubbleSpawner.Play();
 
+            if (_stopRiverAnimationAfterBubble) {
+                yield return new WaitForSecondsRealtime(3);
+                _Rio.Stop();
+            }
         }
     }
 
     public bool IsBubblePopped() {
-        return didItPop;
+        return _didItPop;
     }
 
     void OnDrawGizmosSelected() { //Função para desenhar no editor
