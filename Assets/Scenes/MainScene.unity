@@ -2456,12 +2456,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a217fc4864f3c3489014027ec9636b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maquete: {fileID: 1061794363}
-  bolhaParent: {fileID: 0}
-  tamanhoTransicao: 2
-  tamanhoExpandida: 0
-  GizmosTamBolhaExp: 1
-  audioTransicao: 0
+  _maquete: {fileID: 0}
+  _bolhaParent: {fileID: 0}
+  _tamanhoTransicao: 0
+  _tamanhoExpandida: 0
+  _gizmosTamBolhaExp: 0
+  _audioTransicao: 0
   Audio:
   - {fileID: 8300000, guid: e703af013f1b0d04c87eaf2991419542, type: 3}
   - {fileID: 8300000, guid: 79368db909c73984d80f7cbeb633f72e, type: 3}
@@ -2470,14 +2470,6 @@ MonoBehaviour:
   - 62.5
   - 50
   - 50
-  LoopAudio: 000000
-  SonsAmbiente:
-  - {fileID: 8300000, guid: 6b6dcc66a6f6e054a868b007b631a143, type: 3}
-  - {fileID: 8300000, guid: 25a3f279e0e1cb8488f4db68a677b4b3, type: 3}
-  VolumesAmbiente:
-  - 5
-  - 6.6
-  LoopAmbiente: 0101
 --- !u!54 &1043445793
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -4246,6 +4238,26 @@ PrefabInstance:
       propertyPath: expandMixedRealityCapturePropertySheet
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7192818547689909906, guid: f39a9d103c4129b42a53567f6cd8356a, type: 3}
+      propertyPath: m_ClearFlags
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7192818547689909906, guid: f39a9d103c4129b42a53567f6cd8356a, type: 3}
+      propertyPath: m_BackGroundColor.a
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7192818547689909906, guid: f39a9d103c4129b42a53567f6cd8356a, type: 3}
+      propertyPath: m_BackGroundColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7192818547689909906, guid: f39a9d103c4129b42a53567f6cd8356a, type: 3}
+      propertyPath: m_BackGroundColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7192818547689909906, guid: f39a9d103c4129b42a53567f6cd8356a, type: 3}
+      propertyPath: m_BackGroundColor.r
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8031879260605796266, guid: f39a9d103c4129b42a53567f6cd8356a, type: 3}
       propertyPath: m_LocalRotation.w
       value: 0.7041405
@@ -4547,22 +4559,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a217fc4864f3c3489014027ec9636b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maquete: {fileID: 690446877}
-  bolhaParent: {fileID: 0}
-  tamanhoTransicao: 1.5
-  tamanhoExpandida: 0
-  GizmosTamBolhaExp: 1
-  audioTransicao: 2
+  _maquete: {fileID: 0}
+  _bolhaParent: {fileID: 0}
+  _tamanhoTransicao: 0
+  _tamanhoExpandida: 0
+  _gizmosTamBolhaExp: 0
+  _audioTransicao: 0
   Audio:
   - {fileID: 8300000, guid: db337645302118743ab4fde3a2468ea9, type: 3}
   - {fileID: 8300000, guid: 4d98a93c4f4baad47a6ad808de0159d5, type: 3}
   VolumesAudio:
   - 14.5
   - 14.5
-  LoopAudio: 0000
-  SonsAmbiente: []
-  VolumesAmbiente: []
-  LoopAmbiente: 
 --- !u!54 &1693133410
 Rigidbody:
   m_ObjectHideFlags: 0

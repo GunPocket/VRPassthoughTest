@@ -13,9 +13,12 @@ public class LighthouseHandler : MonoBehaviour {
     [SerializeField] private OVRPassthroughLayer _passthroughLayer;
 
     [SerializeField] private float _passtrhoughBrightness;
-    
+
+    [Range(0, 5)][SerializeField] private int _lightModifier;
+
+
     void Update() {
-        _passtrhoughBrightness = _sol.transform.rotation.z/2;
+        _passtrhoughBrightness = _sol.transform.rotation.z / _lightModifier;
         _passthroughLayer.SetColorMapControls(0, _passtrhoughBrightness);
         print(_passtrhoughBrightness);
         _rotation = _sol.transform.eulerAngles.z;
