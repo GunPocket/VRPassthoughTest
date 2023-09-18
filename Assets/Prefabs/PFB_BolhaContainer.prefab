@@ -480,12 +480,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a217fc4864f3c3489014027ec9636b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maquete: {fileID: 0}
-  bolhaParent: {fileID: 2604216917734809647}
-  tamanhoTransicao: 1.5
-  tamanhoExpandida: 1
-  GizmosTamBolhaExp: 1
-  audioTransicao: 0
+  _maquete: {fileID: 0}
+  _bolhaParent: {fileID: 0}
+  _tamanhoTransicao: 1.5
+  _tamanhoExpandida: 1
+  _gizmosTamBolhaExp: 0
+  _audioTransicao: 2
   Audio: []
   VolumesAudio: []
 --- !u!114 &6746874574245241671
@@ -500,20 +500,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5590d373803f14b438770a322d958dec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  River: {fileID: 0}
   IsFirstBubble: 0
-  BubblePop: {fileID: 3251797921446227379}
+  _bubblePop: {fileID: 3251797921446227379}
   BubbleSpawner: {fileID: 3051882149102965166}
-  Rio: {fileID: 5766816891542115591}
-  riseAnimation: {fileID: 0}
+  _Rio: {fileID: 5766816891542115591}
+  RiseAnimation: {fileID: 0}
   RiseAmount: 2
-  Scenery: []
-  RiverShowBehavior:
+  _scenery: []
+  _riverShowBehavior:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0.20046997
+      value: 0
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -532,6 +531,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  _stopRiverAnimationAfterBubble: 0
   NextBubble: {fileID: 0}
   GizmosAlturaBolha: 1
 --- !u!114 &963522464769420136

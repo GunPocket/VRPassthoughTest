@@ -50,6 +50,7 @@ public class BubbleHandler : MonoBehaviour {
         _colisorBolha = GetComponent<SphereCollider>(); //Pega o componente SphereCollider do objeto
         _audioSource = GetComponent<AudioSource>(); //Pega o componente AudioSource do objeto
         _bubbleTransitionHandler = GetComponent<BubbleTransitionHandler>();
+        _bubbleTransitionHandler.Maquete = _maquete;
 
         if (_maquete == null) { //Se a variável Maquete não estiver atribuída
             Debug.LogWarning("O objeto Maquete não foi atribuído.", gameObject);
@@ -69,6 +70,10 @@ public class BubbleHandler : MonoBehaviour {
     private void OnTriggerEnter(Collider other) { //Quando um objeto entrar no colisor
         if (!other.CompareTag("MainCamera")) { //Caso o objeto não seja a câmera
             return; //Só ignora
+        }
+
+        if (_maquete != null && _maquete.GetComponent<LighthouseHandler>() != null) {
+            _maquete.GetComponent<LighthouseHandler>().Active = true;
         }
 
         //StopAllCoroutines(); //Para todas as corrotinas. 

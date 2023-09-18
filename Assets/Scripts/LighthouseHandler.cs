@@ -12,12 +12,20 @@ public class LighthouseHandler : MonoBehaviour {
 
     [SerializeField] private OVRPassthroughLayer _passthroughLayer;
 
-    [SerializeField] private float _passtrhoughBrightness;
+    private float _passtrhoughBrightness;
 
-    [Range(0, 5)][SerializeField] private int _lightModifier;
+    [Range(0, 10)][SerializeField] private int _lightModifier;
+
+    [SerializeField] private Light _globalLight;
+
+    [HideInInspector] public bool Active = false;
 
 
     void Update() {
+        if (!Active) return;
+
+        _globalLight.enabled = !Active;
+
         _passtrhoughBrightness = _sol.transform.rotation.z / _lightModifier;
         _passthroughLayer.SetColorMapControls(0, _passtrhoughBrightness);
         print(_passtrhoughBrightness);

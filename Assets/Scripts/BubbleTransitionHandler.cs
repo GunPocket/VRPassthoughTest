@@ -11,8 +11,10 @@ public class BubbleTransitionHandler : MonoBehaviour {
     private Transform _sphereTransform;
 
     public bool IsFirstBubble = false;
-    private bool _firstInteraction = true;
     private bool _didItPop = false;
+
+    [HideInInspector] public GameObject Maquete; //GameObject da maquete
+
 
     [Header("Efeitos na cena para esta bolha")]
     [SerializeField] private ParticleSystem _bubblePop;
@@ -65,19 +67,14 @@ public class BubbleTransitionHandler : MonoBehaviour {
     }
 
     private IEnumerator StartBubble() {
+        if (Maquete != null) Maquete.SetActive(false);
         yield return new WaitForSecondsRealtime(3f);
         _sphereMeshRenderer.enabled = true;
         yield return new WaitForSecondsRealtime(5f);
+        if (Maquete != null) Maquete.SetActive(true);
         BubbleSpawner.Stop();
     }
 
-    public void OnTriggerEnter(Collider other) {
-        if (!_firstInteraction) {
-            return;
-        }
-
-        _firstInteraction = false;
-    }
 
     public void StartPopBubble() {
         StartCoroutine(PopBubble());
