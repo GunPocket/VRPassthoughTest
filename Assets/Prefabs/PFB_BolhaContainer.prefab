@@ -501,6 +501,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsFirstBubble: 0
+  Maquete: {fileID: 0}
   _bubblePop: {fileID: 3251797921446227379}
   BubbleSpawner: {fileID: 3051882149102965166}
   _Rio: {fileID: 5766816891542115591}
@@ -609,13 +610,13 @@ VisualEffect:
       - m_Value: {x: 9, y: 0, z: 0}
         m_Name: p1
         m_Overridden: 1
-      - m_Value: {x: 8.35, y: 0, z: -3}
+      - m_Value: {x: 7.71, y: 1.6, z: -3.79}
         m_Name: p2
         m_Overridden: 1
-      - m_Value: {x: 5.35, y: 0, z: 3}
+      - m_Value: {x: 4.71, y: 1.6, z: 2.21}
         m_Name: p3
         m_Overridden: 1
-      - m_Value: {x: 2.35, y: 0, z: 0}
+      - m_Value: {x: 1.71, y: 1.6, z: -0.79}
         m_Name: p4
         m_Overridden: 1
     m_Vector4f:
