@@ -28,7 +28,6 @@ public class LighthouseHandler : MonoBehaviour {
 
         _passtrhoughBrightness = _sol.transform.rotation.z / _lightModifier;
         _passthroughLayer.SetColorMapControls(0, _passtrhoughBrightness);
-        print(_passtrhoughBrightness);
         _rotation = _sol.transform.eulerAngles.z;
         _maquete.SetActive(_rotation < _noite && _rotation > _dia);
     }

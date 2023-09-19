@@ -46,6 +46,8 @@ public class BubbleHandler : MonoBehaviour {
     [Tooltip("Volume de cada áudio")]
     [Range(0, 100)] public float[] VolumesAudio; //Array de volumes de cada áudio
 
+    private bool _primeiraInteracao = false;
+
     private void Awake() {
         _colisorBolha = GetComponent<SphereCollider>(); //Pega o componente SphereCollider do objeto
         _audioSource = GetComponent<AudioSource>(); //Pega o componente AudioSource do objeto
@@ -81,12 +83,16 @@ public class BubbleHandler : MonoBehaviour {
         //até que uma condição seja atingida fora do void Update() ou void FixedUpdate() que são funções
         //que são chamadas a cada frame
 
+        float newScale = _tamanhoExpandida * 2.5f;
+        _bolhaParent.transform.DOScale(newScale, _tamanhoTransicao);
+
+        if (_primeiraInteracao) return; 
+        
+        _primeiraInteracao = true;
+
         if (!_audioSource.isPlaying) {
             if (Audio.Length != 0) { //Se o AudioSource não estiver tocando e tiver audio
                 PlayAudio(Audio[0], VolumesAudio[0]);
-
-                float newScale = _tamanhoExpandida * 2.5f;
-                _bolhaParent.transform.DOScale(newScale, _tamanhoTransicao);
 
                 _colisorBolha.radius = _tamanhoExpandida; //Atribui o tamanho da bolha ao colisor
             } else {
@@ -129,19 +135,19 @@ public class BubbleHandler : MonoBehaviour {
         _bubbleTransitionHandler.StartPopBubble();
     }
 
-    /*private void OnTriggerExit(Collider other) { //Quando um objeto sair do colisor
+    private void OnTriggerExit(Collider other) { //Quando um objeto sair do colisor
         if (!other.CompareTag("MainCamera")) { //Caso o objeto não seja a câmera
             return; //Igonora
         }
 
-        StopAllCoroutines(); //Para todas as corrotinas
+        //StopAllCoroutines(); //Para todas as corrotinas
 
-        bolhaParent.transform.DOScale(tamanhoBolhaNormal, tamanhoTransicao);
+        _bolhaParent.transform.DOScale(_tamanhoBolhaNormal, _tamanhoTransicao);
 
-        colisorBolha.radius = tamanhoBolhaNormal; //Atribui o tamanho normal da bolha ao colisor
+        _colisorBolha.radius = _tamanhoBolhaNormal; //Atribui o tamanho normal da bolha ao colisor
 
-        StartCoroutine(PauseAudio());
-    }*/
+        //StartCoroutine(PauseAudio());
+    }
 
     private IEnumerator PauseAudio() {
         _audioSource.DOFade(0, 1);
