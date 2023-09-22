@@ -66,7 +66,7 @@ public class BubbleHandler : MonoBehaviour {
             Debug.LogWarning("O array Audio está vazio.", gameObject);
         }
 
-        _tamanhoBolhaNormal = _colisorBolha.radius; //Atribui o tamanho normal da bolha
+        _tamanhoBolhaNormal = 1; //Atribui o tamanho normal da bolha
     }
 
     private void OnTriggerEnter(Collider other) { //Quando um objeto entrar no colisor
