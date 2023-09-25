@@ -70,8 +70,8 @@ public class BubbleTransitionHandler : MonoBehaviour {
         if (Maquete != null) Maquete.SetActive(false);
         yield return new WaitForSecondsRealtime(3f);
         _sphereMeshRenderer.enabled = true;
-        yield return new WaitForSecondsRealtime(5f);
         if (Maquete != null) Maquete.SetActive(true);
+        yield return new WaitForSecondsRealtime(5f);
         BubbleSpawner.Stop();
     }
 

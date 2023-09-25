@@ -10,27 +10,27 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 4c2453cdf410c9a4a833c926572a28e7, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.1
+      value: 0.06
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 4c2453cdf410c9a4a833c926572a28e7, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.1
+      value: 0.06
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 4c2453cdf410c9a4a833c926572a28e7, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.1
+      value: 0.06
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 4c2453cdf410c9a4a833c926572a28e7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 11.81
+      value: -0.85
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 4c2453cdf410c9a4a833c926572a28e7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.54
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 4c2453cdf410c9a4a833c926572a28e7, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 9.41
+      value: -0.6
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 4c2453cdf410c9a4a833c926572a28e7, type: 3}
       propertyPath: m_LocalRotation.w
@@ -60,10 +60,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 4c2453cdf410c9a4a833c926572a28e7, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: -7023974396876390944, guid: 4c2453cdf410c9a4a833c926572a28e7, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 110b33de5d9458041b023a2ab5fb0d04, type: 2}
+    - target: {fileID: -4683669308469848369, guid: 4c2453cdf410c9a4a833c926572a28e7, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: a38a757219ea44c459a7b40b8280e262, type: 2}
     - target: {fileID: -3272106112100924687, guid: 4c2453cdf410c9a4a833c926572a28e7, type: 3}
       propertyPath: m_LocalScale.y
       value: 0.93
@@ -78,7 +86,11 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 110b33de5d9458041b023a2ab5fb0d04, type: 2}
     - target: {fileID: 919132149155446097, guid: 4c2453cdf410c9a4a833c926572a28e7, type: 3}
       propertyPath: m_Name
-      value: VARALv2 (1)
+      value: SAMPLE Ilha com shader agua
+      objectReference: {fileID: 0}
+    - target: {fileID: 2930768546799279086, guid: 4c2453cdf410c9a4a833c926572a28e7, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3416211486586183940, guid: 4c2453cdf410c9a4a833c926572a28e7, type: 3}
       propertyPath: m_Materials.Array.data[0]

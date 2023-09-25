@@ -1,4 +1,5 @@
 using DG.Tweening; //Importa a biblioteca DOTween
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -54,6 +55,8 @@ public class BubbleHandler : MonoBehaviour {
         _bubbleTransitionHandler = GetComponent<BubbleTransitionHandler>();
         _bubbleTransitionHandler.Maquete = _maquete;
 
+        _primeiraInteracao = false;
+
         if (_maquete == null) { //Se a variável Maquete não estiver atribuída
             Debug.LogWarning("O objeto Maquete não foi atribuído.", gameObject);
         }
@@ -70,6 +73,7 @@ public class BubbleHandler : MonoBehaviour {
     }
 
     private void OnTriggerEnter(Collider other) { //Quando um objeto entrar no colisor
+        
         if (!other.CompareTag("MainCamera")) { //Caso o objeto não seja a câmera
             return; //Só ignora
         }
