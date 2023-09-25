@@ -40,10 +40,7 @@ public class BubbleTransitionHandler : MonoBehaviour {
         Initializer();
 
         if (IsFirstBubble) {
-            BubbleSpawner.Play();
-            RiseAnimation.Play("Rise");
-            NextBubble.GetComponentInChildren<BubbleTransitionHandler>().NextBubble.SetActive(false);
-            NextBubble.SetActive(false);
+            StartCoroutine(FirstBubble());
         }
 
         if (_Rio != null) {
@@ -55,6 +52,15 @@ public class BubbleTransitionHandler : MonoBehaviour {
         foreach (var obj in _scenery) {
             obj.SetActive(false);
         }
+    }
+
+    private IEnumerator FirstBubble() {
+        BubbleSpawner.Play();
+        RiseAnimation.Play("Rise");
+        NextBubble.GetComponentInChildren<BubbleTransitionHandler>().NextBubble.SetActive(false);
+        NextBubble.SetActive(false);    
+        yield return new WaitForSecondsRealtime(3f);
+        BubbleSpawner.Stop();
     }
 
     private void Initializer() {

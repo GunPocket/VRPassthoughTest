@@ -1567,6 +1567,10 @@ PrefabInstance:
       value: PFB_BubbleSpawner
       objectReference: {fileID: 0}
     - target: {fileID: 8092243662090302537, guid: 98102a4478361544d921efcb6999846e, type: 3}
+      propertyPath: CollisionModule.type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8092243662090302537, guid: 98102a4478361544d921efcb6999846e, type: 3}
       propertyPath: CollisionModule.enabled
       value: 0
       objectReference: {fileID: 0}
