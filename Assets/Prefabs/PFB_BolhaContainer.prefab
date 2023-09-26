@@ -266,9 +266,9 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 500
+  MaxDistance: 2
   Pan2D: 0
-  rolloffMode: 0
+  rolloffMode: 2
   BypassEffects: 0
   BypassListenerEffects: 0
   BypassReverbZones: 0
@@ -277,22 +277,22 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
+      value: 1.0041695
+      inSlope: -3.0056598
+      outSlope: -3.0056598
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
+      inWeight: 0
+      outWeight: 0.065155804
     - serializedVersion: 3
       time: 1
       value: 0
-      inSlope: 0
-      outSlope: 0
+      inSlope: -0.076077595
+      outSlope: -0.076077595
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
+      inWeight: 0.16430593
+      outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
@@ -381,7 +381,7 @@ MonoBehaviour:
   _gizmosTamBolhaExp: 0
   _audioTransicao: 2
   Audio: []
-  VolumesAudio: []
+  _volumesAudio: 0
 --- !u!114 &6746874574245241671
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -584,7 +584,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2703633082100643066, guid: 5bb030071ea1aa947ba219643337ffa0, type: 3}
       propertyPath: m_PropertySheet.m_Vector3f.m_Array.Array.data[1].m_Value.x
-      value: 7.08
+      value: -0.4350021
       objectReference: {fileID: 0}
     - target: {fileID: 2703633082100643066, guid: 5bb030071ea1aa947ba219643337ffa0, type: 3}
       propertyPath: m_PropertySheet.m_Vector3f.m_Array.Array.data[1].m_Value.y
@@ -592,11 +592,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2703633082100643066, guid: 5bb030071ea1aa947ba219643337ffa0, type: 3}
       propertyPath: m_PropertySheet.m_Vector3f.m_Array.Array.data[1].m_Value.z
-      value: -3.112
+      value: -4.992002
       objectReference: {fileID: 0}
     - target: {fileID: 2703633082100643066, guid: 5bb030071ea1aa947ba219643337ffa0, type: 3}
       propertyPath: m_PropertySheet.m_Vector3f.m_Array.Array.data[2].m_Value.x
-      value: 4.08
+      value: 5.5650005
       objectReference: {fileID: 0}
     - target: {fileID: 2703633082100643066, guid: 5bb030071ea1aa947ba219643337ffa0, type: 3}
       propertyPath: m_PropertySheet.m_Vector3f.m_Array.Array.data[2].m_Value.y
@@ -604,11 +604,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2703633082100643066, guid: 5bb030071ea1aa947ba219643337ffa0, type: 3}
       propertyPath: m_PropertySheet.m_Vector3f.m_Array.Array.data[2].m_Value.z
-      value: 2.888
+      value: -1.9920017
       objectReference: {fileID: 0}
     - target: {fileID: 2703633082100643066, guid: 5bb030071ea1aa947ba219643337ffa0, type: 3}
       propertyPath: m_PropertySheet.m_Vector3f.m_Array.Array.data[3].m_Value.x
-      value: 1.08
+      value: 2.565
       objectReference: {fileID: 0}
     - target: {fileID: 2703633082100643066, guid: 5bb030071ea1aa947ba219643337ffa0, type: 3}
       propertyPath: m_PropertySheet.m_Vector3f.m_Array.Array.data[3].m_Value.y
@@ -616,7 +616,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2703633082100643066, guid: 5bb030071ea1aa947ba219643337ffa0, type: 3}
       propertyPath: m_PropertySheet.m_Vector3f.m_Array.Array.data[3].m_Value.z
-      value: -0.112
+      value: 1.008
       objectReference: {fileID: 0}
     - target: {fileID: 4393319454843591491, guid: 5bb030071ea1aa947ba219643337ffa0, type: 3}
       propertyPath: Target

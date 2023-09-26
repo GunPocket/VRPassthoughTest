@@ -55,18 +55,6 @@ public class BubbleHandler : MonoBehaviour {
 
         _primeiraInteracao = false;
 
-        if (_maquete == null) { //Se a variável Maquete não estiver atribuída
-            Debug.LogWarning("O objeto Maquete não foi atribuído.", gameObject);
-        }
-
-        if (_bolhaParent == null) { //Se a variável Bolha não estiver atribuída
-            Debug.LogWarning("O objeto Bolha não foi atribuído.", gameObject);
-        }
-
-        if (Audio.Length == 0 || Audio == null) { //Se o array Audio estiver vazio
-            Debug.LogWarning("O array Audio está vazio.", gameObject);
-        }
-
         _tamanhoBolhaNormal = 1; //Atribui o tamanho normal da bolha
     }
 
