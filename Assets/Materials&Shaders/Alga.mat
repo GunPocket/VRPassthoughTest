@@ -55,8 +55,11 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     - _Smoothness: 0.5
+    - _WindDensity: 0
+    - _WindStrength: 0
     m_Colors:
-    - _BottomColor: {r: 0.26666668, g: 0.4156863, b: 0.45098042, a: 1}
+    - _BottomColor: {r: 0.17181383, g: 0.2319508, b: 0.31132078, a: 1}
     - _EmissionColor: {r: 0.9137255, g: 0.654902, b: 0.98431367, a: 0}
-    - _TopColor: {r: 0.73305875, g: 1, b: 0.4198113, a: 1}
+    - _TopColor: {r: 0.41960788, g: 1, b: 0.62511736, a: 1}
+    - _WindMovement: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []

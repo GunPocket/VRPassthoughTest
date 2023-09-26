@@ -37,16 +37,19 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _AO: 0.5
-    - _EmissionStrength: 0
+    - _AO: 1
+    - _EmissionStrength: 0.25
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Smoothness: 0
+    - _Smoothness: 1
+    - _WindDensity: 0.11
+    - _WindStrength: 0.1
     m_Colors:
-    - _BottomColor: {r: 0.28235295, g: 0.4431373, b: 0.4431373, a: 1}
+    - _BottomColor: {r: 0.41424885, g: 0.8207547, b: 0.44756904, a: 1}
     - _EmissionColor: {r: 0.7137255, g: 1, b: 0.3803922, a: 0}
     - _MidColor: {r: 1, g: 0.33725488, b: 0.12156857, a: 1}
     - _TopColor: {r: 0.7124509, g: 1, b: 0.3820755, a: 1}
+    - _WindMovement: {r: 1, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &3183441910832445178
 MonoBehaviour:
