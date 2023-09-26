@@ -11,7 +11,6 @@ public class BubbleHandler : MonoBehaviour {
 
 
     [Header("Referência dos objetos da cena")] //Cabeçalho para melhor organização no inspector
-
     [Tooltip("Aqui você deve adicionar a referência do GameObject da maquete para essa variável")]
     //Tooltip é o texto que aparece quando o mouse fica em cima da variável
     [SerializeField] private GameObject _maquete; //GameObject da maquete
@@ -21,14 +20,13 @@ public class BubbleHandler : MonoBehaviour {
 
 
     [Header("Tamanho da bolha")]
-
     [Tooltip("Dita o quão rápido a bolha cresce e volta pro tamanho original (em segundos)")]
     [SerializeField] private float _tamanhoTransicao;
 
     [Tooltip("Ditará qual tamanho a bolha irá se expandir")]
     [SerializeField][Range(0, 5)] private float _tamanhoExpandida; //Tamanho da bolha ao expandir. Range diz
-                                                          //o valor mínimo e máximo que pode ser
-                                                          //atribuído
+                                                                   //o valor mínimo e máximo que pode ser
+                                                                   //atribuído
 
     [Tooltip("Mostrará na cena o tamanho visualmente do tamanho")]
     [SerializeField] private bool _gizmosTamBolhaExp; //Mostrará na cena o tamanho visualmente do tamanho
@@ -44,8 +42,8 @@ public class BubbleHandler : MonoBehaviour {
     [Tooltip("Adicionar o áudio que deverá ser tocado ao se aproximar da bolha")]
     public AudioClip[] Audio; //Array de áudios
 
-    [Tooltip("Volume de cada áudio")]
-    [Range(0, 100)] public float[] VolumesAudio; //Array de volumes de cada áudio
+    [Tooltip("Volume dos áudios")]
+    [SerializeField][Range(0, 100)] private float _volumesAudio; //Array de volumes de cada áudio
 
     private bool _primeiraInteracao = false;
 
@@ -73,7 +71,7 @@ public class BubbleHandler : MonoBehaviour {
     }
 
     private void OnTriggerEnter(Collider other) { //Quando um objeto entrar no colisor
-        
+
         if (!other.CompareTag("MainCamera")) { //Caso o objeto não seja a câmera
             return; //Só ignora
         }
@@ -82,23 +80,22 @@ public class BubbleHandler : MonoBehaviour {
             _maquete.GetComponent<LighthouseHandler>().Active = true;
         }
 
-        //StopAllCoroutines(); //Para todas as corrotinas. 
-        //Corrotinas são funções que podem ser pausadas e continuadas depois de um tempo determinado ou
-        //até que uma condição seja atingida fora do void Update() ou void FixedUpdate() que são funções
-        //que são chamadas a cada frame
+        _audioSource.DOFade(_volumesAudio, _audioTransicao);
+
+        _bubbleTransitionHandler.RiverAnimation();
 
         float newScale = _tamanhoExpandida * 2.5f;
         _bolhaParent.transform.DOScale(newScale, _tamanhoTransicao);
 
-        if (_primeiraInteracao) return; 
-        
+        if (_primeiraInteracao) return;
+
         _primeiraInteracao = true;
 
         if (!_audioSource.isPlaying) {
             if (Audio.Length != 0) { //Se o AudioSource não estiver tocando e tiver audio
-                PlayAudio(Audio[0], VolumesAudio[0]);
+                PlayAudio(Audio[0]);
 
-                _colisorBolha.radius = _tamanhoExpandida; //Atribui o tamanho da bolha ao colisor
+                _colisorBolha.radius = 1; //Atribui o tamanho da bolha ao colisor
             } else {
                 if (!_bubbleTransitionHandler.IsBubblePopped()) {
                     StartCoroutine(PopBubble(_audioSource.clip != null ? _audioSource.clip.length : 0.1f));
@@ -107,9 +104,8 @@ public class BubbleHandler : MonoBehaviour {
         }
     }
 
-    private void PlayAudio(AudioClip audioClip, float volume) { //Função para tocar um áudio
+    private void PlayAudio(AudioClip audioClip) { //Função para tocar um áudio
         _audioSource.clip = audioClip; //Atribui o áudio
-        _audioSource.DOFade(volume * 0.01f, _audioTransicao); //Aumenta o volume do audio de 0 até o volume
         _audioSource.Play(); //Toca o áudio
         if (Audio.Length > 1) {
             StartCoroutine(PlayNextAudio(1)); //Começa a corrotina para tocar o próximo áudio
@@ -122,7 +118,7 @@ public class BubbleHandler : MonoBehaviour {
 
     private IEnumerator PlayNextAudio(int index) { //Corrotina para tocar o próximo áudio
         yield return new WaitForSeconds(_audioSource.clip.length); //Espera o tempo do áudio atual acabar
-        PlayAudio(Audio[index], VolumesAudio[index]); //Toca o próximo áudio
+        PlayAudio(Audio[index]); //Toca o próximo áudio
         if (Audio.Length > index + 1) { //Se o próximo áudio existir
             StartCoroutine(PlayNextAudio(index + 1)); //Começa a corrotina para tocar o próximo áudio
         } else {
@@ -144,20 +140,11 @@ public class BubbleHandler : MonoBehaviour {
             return; //Igonora
         }
 
-        //StopAllCoroutines(); //Para todas as corrotinas
-
         _bolhaParent.transform.DOScale(_tamanhoBolhaNormal, _tamanhoTransicao);
 
-        _colisorBolha.radius = _tamanhoBolhaNormal; //Atribui o tamanho normal da bolha ao colisor
+        _colisorBolha.radius = 0.3f; //Atribui o tamanho normal da bolha ao colisor
 
-        //StartCoroutine(PauseAudio());
-    }
-
-    private IEnumerator PauseAudio() {
-        _audioSource.DOFade(0, 1);
-        yield return new WaitForSeconds(1);
-        _audioSource.Stop(); //Para o áudio
-        _audioSource.clip = null; //Atribui null ao áudio
+        _audioSource.DOFade(0.05f, 2);
     }
 
     void OnDrawGizmosSelected() { //Função para desenhar no editor
@@ -167,6 +154,6 @@ public class BubbleHandler : MonoBehaviour {
 
         Gizmos.color = Color.yellow; //Atribui a cor amarela ao Gizmos
         Gizmos.DrawWireSphere(transform.position, _tamanhoExpandida); //Desenha uma esfera com o
-                                                                     //tamanho da bolha expandida
+                                                                      //tamanho da bolha expandida
     }
 }

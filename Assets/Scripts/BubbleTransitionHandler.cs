@@ -1,7 +1,6 @@
 using DG.Tweening;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UIElements;
 using UnityEngine.VFX;
 
 public class BubbleTransitionHandler : MonoBehaviour {
@@ -12,6 +11,7 @@ public class BubbleTransitionHandler : MonoBehaviour {
 
     public bool IsFirstBubble = false;
     private bool _didItPop = false;
+    private bool _riverFlow = false;
 
     [HideInInspector] public GameObject Maquete; //GameObject da maquete
 
@@ -58,7 +58,7 @@ public class BubbleTransitionHandler : MonoBehaviour {
         BubbleSpawner.Play();
         RiseAnimation.Play("Rise");
         NextBubble.GetComponentInChildren<BubbleTransitionHandler>().NextBubble.SetActive(false);
-        NextBubble.SetActive(false);    
+        NextBubble.SetActive(false);
         yield return new WaitForSecondsRealtime(3f);
         BubbleSpawner.Stop();
     }
@@ -96,7 +96,11 @@ public class BubbleTransitionHandler : MonoBehaviour {
         _sphereMeshRenderer.enabled = false;
         _didItPop = true;
         _sphereCollider.enabled = false;
-        if (_Rio != null) {
+    }
+
+    public void RiverAnimation() {
+        if (_Rio != null && !_riverFlow) {
+            _riverFlow = true;
             StartCoroutine(StartRiver());
         }
     }
