@@ -1,77 +1,72 @@
-using DG.Tweening; //Importa a biblioteca DOTween
-using System;
+using DG.Tweening;
 using System.Collections;
 using UnityEngine;
 
 public class BubbleHandler : MonoBehaviour {
-
-    private AudioSource _audioSource; //AudioSource que tocará os áudios
-    private SphereCollider _colisorBolha; //Colisor da bolha
+    private AudioSource _audioSource;
+    private SphereCollider _colisorBolha;
     private BubbleTransitionHandler _bubbleTransitionHandler;
 
-
-    [Header("Referência dos objetos da cena")] //Cabeçalho para melhor organização no inspector
+    [Header("Referência dos objetos da cena")]
     [Tooltip("Aqui você deve adicionar a referência do GameObject da maquete para essa variável")]
-    //Tooltip é o texto que aparece quando o mouse fica em cima da variável
-    [SerializeField] private GameObject _maquete; //GameObject da maquete
+    [SerializeField] private GameObject _maquete;
 
     [Tooltip("Aqui você deve adicionar a referência do GameObject da bolha para essa variável")]
-    [SerializeField] private GameObject _bolhaParent; //GameObject da bolha
-
+    [SerializeField] private GameObject _bolhaParent;
 
     [Header("Tamanho da bolha")]
     [Tooltip("Dita o quão rápido a bolha cresce e volta pro tamanho original (em segundos)")]
-    [SerializeField] private float _tamanhoTransicao;
+    [SerializeField] private float _tamanhoTransicao = 1.0f;
 
     [Tooltip("Ditará qual tamanho a bolha irá se expandir")]
-    [SerializeField][Range(0, 5)] private float _tamanhoExpandida; //Tamanho da bolha ao expandir. Range diz
-                                                                   //o valor mínimo e máximo que pode ser
-                                                                   //atribuído
+    [SerializeField, Range(0, 5)] private float _tamanhoExpandida = 1.0f;
 
     [Tooltip("Mostrará na cena o tamanho visualmente do tamanho")]
-    [SerializeField] private bool _gizmosTamBolhaExp; //Mostrará na cena o tamanho visualmente do tamanho
+    [SerializeField] private bool _gizmosTamBolhaExp;
 
-    private float _tamanhoBolhaNormal; //Tamanho da bolha ao iniciar a cena
-
+    private float _tamanhoBolhaNormal = 1.0f;
 
     [Header("Audio da bolha")]
-    [Tooltip("Quanto tempo demorará para o áudio ficar no volume máximo ou mínimo, vale tanto para os " +
-        "audios que irão tocar quanto para os sons ambientes (em segundos)")]
-    [SerializeField] private float _audioTransicao;
+    [Tooltip("Quanto tempo demorará para o áudio ficar no volume máximo ou mínimo, vale tanto para os audios que irão tocar quanto para os sons ambientes (em segundos)")]
+    [SerializeField] private float _audioTransicao = 1.0f;
 
     [Tooltip("Adicionar o áudio que deverá ser tocado ao se aproximar da bolha")]
-    public AudioClip[] Audio; //Array de áudios
+    [SerializeField] private AudioClip[] _audioClips;
 
     [Tooltip("Volume dos áudios")]
-    [SerializeField][Range(0, 100)] private float _volumesAudio; //Array de volumes de cada áudio
+    [SerializeField, Range(0, 100)] private float _volumesAudio = 100.0f;
 
     private bool _primeiraInteracao = false;
 
     private void Awake() {
-        _colisorBolha = GetComponent<SphereCollider>(); //Pega o componente SphereCollider do objeto
-        _audioSource = GetComponent<AudioSource>(); //Pega o componente AudioSource do objeto
+        // Inicialização de componentes e atributos
+        _colisorBolha = GetComponent<SphereCollider>();
+        _audioSource = GetComponent<AudioSource>();
         _bubbleTransitionHandler = GetComponent<BubbleTransitionHandler>();
         _bubbleTransitionHandler.Maquete = _maquete;
 
         _primeiraInteracao = false;
 
-        _tamanhoBolhaNormal = 1; //Atribui o tamanho normal da bolha
+        _tamanhoBolhaNormal = 1.0f;
     }
 
-    private void OnTriggerEnter(Collider other) { //Quando um objeto entrar no colisor
-
-        if (!other.CompareTag("MainCamera")) { //Caso o objeto não seja a câmera
-            return; //Só ignora
+    private void OnTriggerEnter(Collider other) {
+        if (!other.CompareTag("MainCamera")) {
+            return; // Ignorar se não for a câmera principal
         }
 
+        // Ativar elementos relacionados à câmera
         if (_maquete != null && _maquete.GetComponent<LighthouseHandler>() != null) {
             _maquete.GetComponent<LighthouseHandler>().Active = true;
         }
 
+        // Transição do volume do áudio
         _audioSource.DOFade(_volumesAudio, _audioTransicao);
 
+        // Animação da bolha
         _bubbleTransitionHandler.RiverAnimation();
 
+        // Aumentar o tamanho da bolha
         float newScale = _tamanhoExpandida * 2.5f;
         _bolhaParent.transform.DOScale(newScale, _tamanhoTransicao);
 
@@ -80,38 +75,43 @@ public class BubbleHandler : MonoBehaviour {
         _primeiraInteracao = true;
 
         if (!_audioSource.isPlaying) {
-            if (Audio.Length != 0) { //Se o AudioSource não estiver tocando e tiver audio
-                PlayAudio(Audio[0]);
-
-                _colisorBolha.radius = 1; //Atribui o tamanho da bolha ao colisor
+            if (_audioClips.Length > 0) {
+                // Tocar o primeiro áudio
+                PlayAudio(_audioClips[0]);
+                _colisorBolha.radius = 1;
             } else {
                 if (!_bubbleTransitionHandler.IsBubblePopped()) {
+                    // Iniciar a animação de "estourar" da bolha
                     StartCoroutine(PopBubble(_audioSource.clip != null ? _audioSource.clip.length : 0.1f));
                 }
             }
         }
     }
 
-    private void PlayAudio(AudioClip audioClip) { //Função para tocar um áudio
-        _audioSource.clip = audioClip; //Atribui o áudio
-        _audioSource.Play(); //Toca o áudio
-        if (Audio.Length > 1) {
-            StartCoroutine(PlayNextAudio(1)); //Começa a corrotina para tocar o próximo áudio
+    private void PlayAudio(AudioClip audioClip) {
+        _audioSource.clip = audioClip;
+        _audioSource.Play();
+        if (_audioClips.Length > 1) {
+            // Tocar os próximos áudios em sequência
+            StartCoroutine(PlayNextAudio(1));
         } else {
             if (!_bubbleTransitionHandler.IsBubblePopped()) {
+                // Iniciar a animação de "estourar" da bolha
                 StartCoroutine(PopBubble(_audioSource.clip != null ? _audioSource.clip.length : 0.1f));
             }
         }
     }
 
-    private IEnumerator PlayNextAudio(int index) { //Corrotina para tocar o próximo áudio
-        yield return new WaitForSeconds(_audioSource.clip.length); //Espera o tempo do áudio atual acabar
-        PlayAudio(Audio[index]); //Toca o próximo áudio
-        if (Audio.Length > index + 1) { //Se o próximo áudio existir
-            StartCoroutine(PlayNextAudio(index + 1)); //Começa a corrotina para tocar o próximo áudio
+    private IEnumerator PlayNextAudio(int index) {
+        yield return new WaitForSeconds(_audioSource.clip.length);
+        PlayAudio(_audioClips[index]);
+        if (_audioClips.Length > index + 1) {
+            // Continuar tocando os próximos áudios
+            StartCoroutine(PlayNextAudio(index + 1));
         } else {
             if (!_bubbleTransitionHandler.IsBubblePopped()) {
-                yield return new WaitForSeconds(_audioSource.clip.length); //Espera o tempo do áudio atual acabar
+                yield return new WaitForSeconds(_audioSource.clip.length);
+                // Iniciar a animação de "estourar" da bolha
                 StartCoroutine(PopBubble(_audioSource.clip != null ? _audioSource.clip.length : 0.1f));
             }
         }
@@ -119,29 +119,32 @@ public class BubbleHandler : MonoBehaviour {
 
     private IEnumerator PopBubble(float animDelay) {
         yield return new WaitForSeconds(animDelay);
+        // Reduzir o tamanho da bolha de volta ao tamanho normal
         _bolhaParent.transform.DOScale(_tamanhoBolhaNormal, _tamanhoTransicao);
         _bubbleTransitionHandler.StartPopBubble();
     }
 
-    private void OnTriggerExit(Collider other) { //Quando um objeto sair do colisor
-        if (!other.CompareTag("MainCamera")) { //Caso o objeto não seja a câmera
-            return; //Igonora
+    private void OnTriggerExit(Collider other) {
+        if (!other.CompareTag("MainCamera")) {
+            return; // Ignorar se não for a câmera principal
         }
 
+        // Reduzir o tamanho da bolha de volta ao tamanho normal
         _bolhaParent.transform.DOScale(_tamanhoBolhaNormal, _tamanhoTransicao);
 
-        _colisorBolha.radius = 0.3f; //Atribui o tamanho normal da bolha ao colisor
+        _colisorBolha.radius = 0.3f;
 
+        // Transição do volume do áudio
         _audioSource.DOFade(0.05f, 2);
     }
 
-    void OnDrawGizmosSelected() { //Função para desenhar no editor
-        if (!_gizmosTamBolhaExp) { //Se a variável GizmosTamBolhaExp for falsa
-            return; //Só ignora
+    private void OnDrawGizmosSelected() {
+        if (!_gizmosTamBolhaExp) {
+            return; // Não desenhar gizmos se a opção estiver desativada
         }
 
-        Gizmos.color = Color.yellow; //Atribui a cor amarela ao Gizmos
-        Gizmos.DrawWireSphere(transform.position, _tamanhoExpandida); //Desenha uma esfera com o
-                                                                      //tamanho da bolha expandida
+        // Desenhar uma esfera de gizmo para representar o tamanho expandido da bolha
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, _tamanhoExpandida);
     }
 }
